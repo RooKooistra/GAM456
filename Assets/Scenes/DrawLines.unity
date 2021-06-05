@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   squarePixel: {fileID: 5688284518455193770, guid: b35614d542d080c40a886198c2bee771, type: 3}
   startPosition: {x: 0, y: 0}
-  endPosition: {x: 14, y: 8}
+  endPosition: {x: 13, y: -8}
 --- !u!4 &1285828496
 Transform:
   m_ObjectHideFlags: 0

@@ -37,7 +37,7 @@ public class LineDrawer : MonoBehaviour
             {
                 y += 1;
                 error -= 1.0;
-            }
+            } 
         }
     }
 }
