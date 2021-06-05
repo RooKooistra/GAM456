@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TileWorldBuilder : MonoBehaviour
 {
-	[SerializeField]
-	private Camera MainCamera;
 	[SerializeField]
 	private GameObject BuildingBlockPrefab = null;
 	[SerializeField]
@@ -14,44 +13,33 @@ public class TileWorldBuilder : MonoBehaviour
 
 	public List<GameObject> WorldBuildingBlocks = new List<GameObject>();
 
-	private void Start()
+	public static event Action<int,int> WorldBeingBuilt;
+
+
+
+	public void BuildWorld(int rows, int columns, float blockDensity, bool warpBlocks)
 	{
-		MainCamera = Camera.main;
-	}
+		WorldBeingBuilt?.Invoke(rows, columns);
 
-
-	public void BuildWorld(int rows, int columns, float blockDensity)
-	{
-		if (WorldBuildingBlocks.Count != 0)
-		{
-			Debug.Log("World already built"); return;
-		}
-			
-		int cameraSize = rows; 
-		float cameraSizeModifier = 1.5f;
-
-		if (columns > rows)
-		{
-			cameraSize = columns;
-			cameraSizeModifier = 1.9f;
-		}
-		Debug.Log(cameraSizeModifier);
-			
-		MainCamera.orthographicSize = (cameraSize / cameraSizeModifier);
-		MainCamera.transform.position = new Vector3((float) columns / 2, 10f, (float) rows / 2);
+		if (WorldBuildingBlocks.Count != 0) DestroyWorld();
 
 		for (int i = 0; i < columns; i++)
 		{
 			for (int j = 0; j < rows; j++)
 			{
 				GameObject FloorInstance = Instantiate(Floor, new Vector3(i, -.5f, j), Quaternion.identity);
-				// FloorInstance.transform.localScale = new Vector3(.1f, .1f, .1f);
 				WorldBuildingBlocks.Add(FloorInstance);
 
-				bool Boolean = (Random.value <= blockDensity);
+				bool Boolean = UnityEngine.Random.value <= blockDensity;
 				if (Boolean)
 				{
 					GameObject BuildingBlockInstance = Instantiate(BuildingBlockPrefab, new Vector3(i, 0, j), Quaternion.identity);
+					if(warpBlocks)
+					{
+						BuildingBlockInstance.transform.localScale = new Vector3(UnityEngine.Random.Range(.25f, 2.5f), 1f, UnityEngine.Random.Range(.25f, 2.5f));
+						BuildingBlockInstance.transform.eulerAngles = new Vector3(0, UnityEngine.Random.Range(0, 360f), 0);
+					}
+							
 					WorldBuildingBlocks.Add(BuildingBlockInstance);
 				}
 
