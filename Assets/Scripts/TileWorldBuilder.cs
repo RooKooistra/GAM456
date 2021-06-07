@@ -16,7 +16,6 @@ public class TileWorldBuilder : MonoBehaviour
 	public static event Action<int,int> WorldBeingBuilt;
 
 
-
 	public void BuildWorld(int rows, int columns, float blockDensity, bool warpBlocks)
 	{
 		WorldBeingBuilt?.Invoke(rows, columns);
@@ -56,4 +55,5 @@ public class TileWorldBuilder : MonoBehaviour
 		}
 		WorldBuildingBlocks.Clear();
 	}
+
 }
