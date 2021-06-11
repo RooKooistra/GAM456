@@ -35,7 +35,6 @@ public class BFS : MonoBehaviour
 			for(int j = 0; j < rows; j++)
 			{
 				Vector3 worldPoint = new Vector3(i, 0, j);
-
 				bool walkable = !(Physics.CheckSphere(worldPoint, (boxSize / 2), layerMask));
 
 				grid[i, j] = new Node(walkable, worldPoint);
