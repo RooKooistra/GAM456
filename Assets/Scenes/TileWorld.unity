@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 287081333}
   - component: {fileID: 287081332}
   m_Layer: 0
-  m_Name: BFS
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 287081331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce941f616c33c5943b7161f4c1e74d71, type: 3}
+  m_Script: {fileID: 11500000, guid: c204fc89f21edef4da93ed8c1e73f87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxSize: 0.9
@@ -582,6 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingBlockPrefab: {fileID: 5943287987421717327, guid: 8796a5c85aa4d39478bdd6b2e1250d39, type: 3}
   Floor: {fileID: 1228568548763943190, guid: c4c0a41bd2e73e640a877ef2aaefc603, type: 3}
+  perlinCuttOff: 0.5
   WorldBuildingBlocks: []
 --- !u!4 &404429931
 Transform:
@@ -1146,7 +1147,7 @@ GameObject:
   - component: {fileID: 568561160}
   - component: {fileID: 568561161}
   m_Layer: 5
-  m_Name: ColumnsSlider
+  m_Name: SliderX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1767,7 +1768,7 @@ GameObject:
   - component: {fileID: 1234794444}
   - component: {fileID: 1234794445}
   m_Layer: 5
-  m_Name: RowsSlider
+  m_Name: SliderZ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2259,7 +2260,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' Warp Blocks'
+  m_Text: Use Perlin Noise
 --- !u!222 &1606605579
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3094,12 +3095,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8de8476c77a0445907b683596c0ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rowSlider: {fileID: 1234794444}
-  columnSlider: {fileID: 568561160}
+  SliderRowZ: {fileID: 1234794444}
+  SliderRowX: {fileID: 568561160}
   densitySlider: {fileID: 1889076075}
   warpBlocksToggle: {fileID: 305082782}
   tileWorldBuilderInstance: {fileID: 404429930}
-  bfsInstance: {fileID: 287081332}
+  gridMapInstance: {fileID: 287081332}
 --- !u!4 &1989303974
 Transform:
   m_ObjectHideFlags: 0
