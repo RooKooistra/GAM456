@@ -36,7 +36,7 @@ public class PathFinder : MonoBehaviour
 
     int GetDistanceBetweenNodes(Node fromNode,Node toNode)
 	{
-        float distance = Vector3.Distance(new Vector3(fromNode.x, 0, fromNode.z), new Vector3(toNode.x, 0, toNode.z));
+        float distance = Vector3.Distance(fromNode.worldPosition, toNode.worldPosition);
         return Mathf.RoundToInt(distance);
 	}
 
