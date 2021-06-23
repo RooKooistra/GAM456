@@ -33,11 +33,6 @@ public class TileWorldBuilder : MonoBehaviour
 				if (Boolean)
 				{
 					GameObject BuildingBlockInstance = Instantiate(BuildingBlockPrefab, new Vector3(x, 0, z), Quaternion.identity);
-					/* if(warpBlocks)
-					{
-						BuildingBlockInstance.transform.localScale = new Vector3(UnityEngine.Random.Range(.25f, 2.5f), 1f, UnityEngine.Random.Range(.25f, 2.5f));
-						BuildingBlockInstance.transform.eulerAngles = new Vector3(0, UnityEngine.Random.Range(0, 360f), 0);
-					} */
 							
 					WorldBuildingBlocks.Add(BuildingBlockInstance);
 				}

@@ -367,8 +367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c204fc89f21edef4da93ed8c1e73f87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openList: []
-  closedList: []
+  gridRowX: 0
+  gridRowZ: 0
   boxSize: 0.9
   layerMask:
     serializedVersion: 2
@@ -400,8 +400,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridMap: {fileID: 287081332}
-  startWorldPoint: {fileID: 0}
-  endWorldPoint: {fileID: 0}
+  startWorldPoint: {fileID: 29881703}
+  endWorldPoint: {fileID: 561776478}
 --- !u!1 &292688877
 GameObject:
   m_ObjectHideFlags: 0

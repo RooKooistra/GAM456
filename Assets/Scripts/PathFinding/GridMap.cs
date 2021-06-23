@@ -29,6 +29,14 @@ public class GridMap : MonoBehaviour
 	// public GameObject startPoint;
 	// public GameObject endPoint; -- Move these to pathFinding script
 
+	PathFinder pathfinder;
+
+
+	private void Start()
+	{
+		pathfinder = GetComponent<PathFinder>();
+	}
+
 	public void BuildGrid(int rowsX, int rowsZ)
 	{
 		gridRowX = rowsX; gridRowZ = rowsZ; // set these variables to be accessed from pathfinder in the neighbourcheck;
@@ -47,6 +55,8 @@ public class GridMap : MonoBehaviour
 
 			}
 		}
+
+		pathfinder.GetPath(); // put here to test shit works
 	}
 
 	// convert worldPosition to node reference

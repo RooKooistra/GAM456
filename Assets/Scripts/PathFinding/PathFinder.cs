@@ -7,9 +7,11 @@ public class PathFinder : MonoBehaviour
     public GridMap gridMap = null;
 
     public GameObject startWorldPoint;
-    public GameObject endWorldPoint; 
+    public GameObject endWorldPoint;
 
-    List<Node> GetkNeighbours(Node node) // Ask Cam if this should be in GridMap class
+    List<Node> finalPath = new List<Node>();
+
+	List<Node> GetkNeighbours(Node node) // Ask Cam if this should be in GridMap class
 	{
         List<Node> neighbours = new List<Node>();
 
@@ -21,8 +23,8 @@ public class PathFinder : MonoBehaviour
                 if (x == 0 && z == 0) continue;
 
                 // check to see if node is inside the grid
-                int thisRowX = (int) node.worldPosition.x + x;
-                int thisRowZ = (int) node.worldPosition.z + z;
+                int thisRowX = Mathf.RoundToInt(node.worldPosition.x + x);
+                int thisRowZ = Mathf.RoundToInt(node.worldPosition.z + z);
 
 				if (thisRowX >= 0 && thisRowX < gridMap.gridRowX && thisRowZ >= 0 && thisRowZ < gridMap.gridRowZ)
 				{
@@ -43,9 +45,29 @@ public class PathFinder : MonoBehaviour
     void GetFinalPath(Node fromNode, Node toNode)
     {
         // need to work out this one
+        Node activeNode = toNode;
+        finalPath.Add(activeNode);
+
+		while (activeNode != fromNode)
+		{
+            finalPath.Add(activeNode.parentNode);
+            activeNode = activeNode.parentNode;
+		}
     }
 
-    void GetPath()
+    private void OnDrawGizmos()
+    {
+        if (finalPath != null)
+        {
+            foreach (Node node in finalPath)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawCube(node.worldPosition, Vector3.one);
+            }
+        }
+    }
+
+    public void GetPath()
 	{
 
         /* Notes from Reference
@@ -67,13 +89,15 @@ public class PathFinder : MonoBehaviour
          *  if neighbour is not traversable or neighbour is in closed       
          *      skip to next neightbour                         -- DONE
          * 
-         * if new path to neighbour is shorter or neighbour is not in open -- working
-         *  set f_cost of neighbour (need to set g and h cost as f is calculated)
-         *  set parent of neighbour to current
+         * if new path to neighbour is shorter or neighbour is not in open -- DONE
+         *  set f_cost of neighbour (need to set g and h cost as f is calculated)   -- DONE
+         *  set parent of neighbour to current      -- DONE
          *  if neighbour is not in open
-         *      add neighbour to open
+         *      add neighbour to open       -- DONE
          *
          */
+
+        finalPath.Clear();
 
         Node startNode = gridMap.WorldPositiontoNodeReference(startWorldPoint.transform.position);
         Node endNode = gridMap.WorldPositiontoNodeReference(endWorldPoint.transform.position);
