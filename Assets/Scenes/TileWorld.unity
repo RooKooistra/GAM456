@@ -347,8 +347,9 @@ GameObject:
   m_Component:
   - component: {fileID: 287081333}
   - component: {fileID: 287081332}
+  - component: {fileID: 287081334}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: PathiFinding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,12 +367,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c204fc89f21edef4da93ed8c1e73f87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openList: []
+  closedList: []
   boxSize: 0.9
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  startPoint: {fileID: 29881703}
-  endPoint: {fileID: 561776478}
 --- !u!4 &287081333
 Transform:
   m_ObjectHideFlags: 0
@@ -386,6 +387,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &287081334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287081331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29484505a4abf2641aa22db91e82a74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridMap: {fileID: 287081332}
+  startWorldPoint: {fileID: 0}
+  endWorldPoint: {fileID: 0}
 --- !u!1 &292688877
 GameObject:
   m_ObjectHideFlags: 0
