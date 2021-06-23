@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour
+public class Node
 {
 
 	public bool walkable;
 	public bool cover = false;
 	public Vector3 worldPosition;
+	public Node parentNode = null;
 
 	public int gCost; // distance to start
 	public int hCost; // distance to end (heuristic)

@@ -9,7 +9,7 @@ public class PathFinder : MonoBehaviour
     public GameObject startWorldPoint;
     public GameObject endWorldPoint; 
 
-    List<Node> GetkNeighbours(Node node) // this might be better in gridmap script
+    List<Node> GetkNeighbours(Node node) // Ask Cam if this should be in GridMap class
 	{
         List<Node> neighbours = new List<Node>();
 
@@ -21,8 +21,8 @@ public class PathFinder : MonoBehaviour
                 if (x == 0 && z == 0) continue;
 
                 // check to see if node is inside the grid
-                int thisRowX = Mathf.RoundToInt(node.worldPosition.x) + x;
-                int thisRowZ = Mathf.RoundToInt(node.worldPosition.z) + z;
+                int thisRowX = (int) node.worldPosition.x + x;
+                int thisRowZ = (int) node.worldPosition.z + z;
 
 				if (thisRowX >= 0 && thisRowX < gridMap.gridRowX && thisRowZ >= 0 && thisRowZ < gridMap.gridRowZ)
 				{
@@ -39,6 +39,11 @@ public class PathFinder : MonoBehaviour
         float distance = Vector3.Distance(fromNode.worldPosition, toNode.worldPosition);
         return Mathf.RoundToInt(distance);
 	}
+
+    void GetFinalPath(Node fromNode, Node toNode)
+    {
+        // need to work out this one
+    }
 
     void GetPath()
 	{
@@ -58,12 +63,12 @@ public class PathFinder : MonoBehaviour
          * if current is the target node // path has been found         -- DONE, HAVE NOT DONE LOGIC AFTER FOUND TARGET
          *  return
          * 
-         * foreach neightbour of the current node               -- DONE .. MADE CGetNEIGHBOURS
-         *  if neighbour is not traversable or neighbour is in closed
-         *      skip to next neightbour
+         * foreach neightbour of the current node               -- DONE .. MADE GetNEIGHBOURS
+         *  if neighbour is not traversable or neighbour is in closed       
+         *      skip to next neightbour                         -- DONE
          * 
-         * if new path to neighbour is shorter or neighbour is not in open
-         *  set f_cost of neighbour
+         * if new path to neighbour is shorter or neighbour is not in open -- working
+         *  set f_cost of neighbour (need to set g and h cost as f is calculated)
          *  set parent of neighbour to current
          *  if neighbour is not in open
          *      add neighbour to open
@@ -82,7 +87,7 @@ public class PathFinder : MonoBehaviour
 		{
             Node activeNode = openList[0];
 
-            for(int i = 0; i < openList.Count; i++) 
+            for(int i = 0; i < openList.Count; i++) // loops through all in current openlist (dont check self)
 			{
 				if (activeNode.fCost() > openList[i].fCost() || activeNode.fCost() == openList[i].fCost() && activeNode.hCost > openList[i].hCost)
 				{
@@ -93,13 +98,24 @@ public class PathFinder : MonoBehaviour
             openList.Remove(activeNode);
             closedList.Add(activeNode);
 
-            if (activeNode == endNode) return; // path has been found... start the process of following the path.
+            if (activeNode == endNode)
+            {
+                GetFinalPath(startNode, endNode);
+                return; // path has been found... start the process of following the path.
+            }
 
             foreach(Node neighbour in GetkNeighbours(activeNode)) 
 			{
-                if (!neighbour.walkable || closedList.Contains(neighbour)) continue;
+                if (!neighbour.walkable || closedList.Contains(neighbour)) continue; // ignore if blocked or already processed
+
+                if(neighbour.gCost > GetDistanceBetweenNodes(neighbour, activeNode) || !openList.Contains(neighbour))
+				{
+                    neighbour.gCost = GetDistanceBetweenNodes(neighbour, activeNode);
+                    neighbour.hCost = GetDistanceBetweenNodes(neighbour, endNode);
+                    neighbour.parentNode = activeNode;
+                    if (!openList.Contains(neighbour)) openList.Add(neighbour);
+                }
 			}
 		}
     }
-
 }
