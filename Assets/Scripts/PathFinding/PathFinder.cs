@@ -9,6 +9,10 @@ public class PathFinder : MonoBehaviour
     public GameObject startWorldPoint;
     public GameObject endWorldPoint;
 
+
+    List<Node> openListVisualise = new List<Node>();
+    List<Node> closedListVisualise = new List<Node>(); // just for gizmo visualisation
+
     List<Node> finalPath = new List<Node>();
 
 	List<Node> GetkNeighbours(Node node) // Ask Cam if this should be in GridMap class
@@ -54,23 +58,49 @@ public class PathFinder : MonoBehaviour
             finalPath.Add(activeNode.parentNode);
             activeNode = activeNode.parentNode;
 		}
+
+        finalPath.Reverse();
     }
 
     private void OnDrawGizmos()
     {
+        if (closedListVisualise != null)
+        {
+            foreach (Node node in closedListVisualise)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawCube(node.worldPosition, Vector3.one);
+
+            }
+        }
+
+        if (openListVisualise != null)
+        {
+            foreach (Node node in openListVisualise)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawCube(node.worldPosition, Vector3.one);
+
+            }
+        }
+
         if (finalPath != null)
         {
             foreach (Node node in finalPath)
             {
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawCube(node.worldPosition, Vector3.one);
+
             }
         }
     }
 
     public void GetPath()
-	{
+    {
+        StartCoroutine(FindPath()); // switched to corouting for visualisation
+    }
 
+    IEnumerator FindPath() {
         /* Notes from Reference
          * 
          * OPEN // the set of nods to be evaluated          -- DONE
@@ -90,7 +120,7 @@ public class PathFinder : MonoBehaviour
          *  if neighbour is not traversable or neighbour is in closed       
          *      skip to next neightbour                         -- DONE
          * 
-         * if new path to neighbour is shorter or neighbour is not in open -- DONE
+         * if new path to neighbour is shorter or neighbour is not in open -- DONE ** not done right.. check over
          *  set f_cost of neighbour (need to set g and h cost as f is calculated)   -- DONE
          *  set parent of neighbour to current      -- DONE
          *  if neighbour is not in open
@@ -112,7 +142,7 @@ public class PathFinder : MonoBehaviour
 		{
             Node activeNode = openList[0];
 
-            for(int i = 0; i < openList.Count; i++) // loops through all in current openlist (dont check self)
+            for(int i = 1; i < openList.Count; i++) // loops through all in current openlist (dont check self)
 			{
 				if (activeNode.fCost() > openList[i].fCost() || activeNode.fCost() == openList[i].fCost() && activeNode.hCost > openList[i].hCost)
 				{
@@ -126,21 +156,27 @@ public class PathFinder : MonoBehaviour
             if (activeNode == endNode)
             {
                 GetFinalPath(startNode, endNode);
-                return; // path has been found... start the process of following the path.
+                yield break;
+                //return; // path has been found... start the process of following the path.
             }
 
             foreach(Node neighbour in GetkNeighbours(activeNode)) 
 			{
                 if (!neighbour.walkable || closedList.Contains(neighbour)) continue; // ignore if blocked or already processed
 
-                if(neighbour.gCost > GetDistanceBetweenNodes(neighbour, activeNode) || !openList.Contains(neighbour)) // i dont think this works properly. Might switch to floats to see if this changes anything
+                if(neighbour.gCost > (activeNode.gCost + GetDistanceBetweenNodes(neighbour, activeNode)) || !openList.Contains(neighbour)) 
 				{
-                    neighbour.gCost = GetDistanceBetweenNodes(neighbour, activeNode);
+                    neighbour.gCost = activeNode.gCost + GetDistanceBetweenNodes(neighbour, activeNode);
                     neighbour.hCost = GetDistanceBetweenNodes(neighbour, endNode);
                     neighbour.parentNode = activeNode;
                     if (!openList.Contains(neighbour)) openList.Add(neighbour);
                 }
 			}
+
+            openListVisualise = openList;
+            closedListVisualise = closedList;
+
+            yield return new WaitForSeconds(.001f);
 		}
     }
 }
