@@ -10,9 +10,9 @@ public class Node
 	public Vector3 worldPosition;
 	public Node parentNode = null;
 
-	public int gCost; // distance to start
-	public int hCost; // distance to end (heuristic)
-	public int fCost()   // combined g and h cost maybe make a getter
+	public float gCost; // distance to start
+	public float hCost; // distance to end (heuristic)
+	public float fCost()   // combined g and h cost maybe make a getter
 	{
 		return gCost + hCost;
 	}

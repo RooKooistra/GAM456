@@ -36,10 +36,11 @@ public class PathFinder : MonoBehaviour
         return neighbours;
 	}
 
-    int GetDistanceBetweenNodes(Node fromNode,Node toNode)
+    float GetDistanceBetweenNodes(Node fromNode,Node toNode)
 	{
         float distance = Vector3.Distance(fromNode.worldPosition, toNode.worldPosition);
-        return Mathf.RoundToInt(distance);
+        //return Mathf.RoundToInt(distance);
+        return distance;
 	}
 
     void GetFinalPath(Node fromNode, Node toNode)
@@ -132,7 +133,7 @@ public class PathFinder : MonoBehaviour
 			{
                 if (!neighbour.walkable || closedList.Contains(neighbour)) continue; // ignore if blocked or already processed
 
-                if(neighbour.gCost > GetDistanceBetweenNodes(neighbour, activeNode) || !openList.Contains(neighbour))
+                if(neighbour.gCost > GetDistanceBetweenNodes(neighbour, activeNode) || !openList.Contains(neighbour)) // i dont think this works properly. Might switch to floats to see if this changes anything
 				{
                     neighbour.gCost = GetDistanceBetweenNodes(neighbour, activeNode);
                     neighbour.hCost = GetDistanceBetweenNodes(neighbour, endNode);
