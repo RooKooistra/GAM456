@@ -8,12 +8,12 @@ public class PathFinder : MonoBehaviour
 
     public GameObject startWorldPoint;
     public GameObject endWorldPoint;
+    PlayerMovement playerMovement;
 
-
-    List<Node> openListVisualise = new List<Node>();
-    List<Node> closedListVisualise = new List<Node>(); // just for gizmo visualisation
-
-    List<Node> finalPath = new List<Node>();
+	private void Start()
+	{
+        playerMovement = startWorldPoint.GetComponent<PlayerMovement>();
+	}
 
 	List<Node> GetkNeighbours(Node node) // Ask Cam if this should be in GridMap class
 	{
@@ -49,7 +49,9 @@ public class PathFinder : MonoBehaviour
 
     void GetFinalPath(Node fromNode, Node toNode)
     {
-        // need to work out this one
+        // works backwards from endNode then reverse order to get path
+        List<Node> finalPath = new List<Node>();
+
         Node activeNode = toNode;
         finalPath.Add(activeNode);
 
@@ -60,47 +62,14 @@ public class PathFinder : MonoBehaviour
 		}
 
         finalPath.Reverse();
+        gridMap.finalPath = finalPath;
+        playerMovement.TravelPath(finalPath);
     }
 
-    private void OnDrawGizmos()
-    {
-        if (closedListVisualise != null)
-        {
-            foreach (Node node in closedListVisualise)
-            {
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one);
 
-            }
-        }
+    public void GetPath(Vector3 from, Vector3 to)
+    { 
 
-        if (openListVisualise != null)
-        {
-            foreach (Node node in openListVisualise)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one);
-
-            }
-        }
-
-        if (finalPath != null)
-        {
-            foreach (Node node in finalPath)
-            {
-                Gizmos.color = Color.magenta;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one);
-
-            }
-        }
-    }
-
-    public void GetPath()
-    {
-        StartCoroutine(FindPath()); // switched to corouting for visualisation
-    }
-
-    IEnumerator FindPath() {
         /* Notes from Reference
          * 
          * OPEN // the set of nods to be evaluated          -- DONE
@@ -128,10 +97,8 @@ public class PathFinder : MonoBehaviour
          *
          */
 
-        finalPath.Clear();
-
-        Node startNode = gridMap.WorldPositiontoNodeReference(startWorldPoint.transform.position);
-        Node endNode = gridMap.WorldPositiontoNodeReference(endWorldPoint.transform.position);
+        Node startNode = gridMap.WorldPositiontoNodeReference(from);
+        Node endNode = gridMap.WorldPositiontoNodeReference(to);
 
         List<Node> openList = new List<Node>();
         List<Node> closedList = new List<Node>();
@@ -153,11 +120,10 @@ public class PathFinder : MonoBehaviour
             openList.Remove(activeNode);
             closedList.Add(activeNode);
 
-            if (activeNode == endNode)
+            if (activeNode == endNode) // path has been found... 
             {
                 GetFinalPath(startNode, endNode);
-                yield break;
-                //return; // path has been found... start the process of following the path.
+                return; 
             }
 
             foreach(Node neighbour in GetkNeighbours(activeNode)) 
@@ -166,17 +132,14 @@ public class PathFinder : MonoBehaviour
 
                 if(neighbour.gCost > (activeNode.gCost + GetDistanceBetweenNodes(neighbour, activeNode)) || !openList.Contains(neighbour)) 
 				{
-                    neighbour.gCost = activeNode.gCost + GetDistanceBetweenNodes(neighbour, activeNode);
+                    neighbour.gCost = activeNode.gCost + GetDistanceBetweenNodes(neighbour, activeNode); // update gcost
                     neighbour.hCost = GetDistanceBetweenNodes(neighbour, endNode);
                     neighbour.parentNode = activeNode;
-                    if (!openList.Contains(neighbour)) openList.Add(neighbour);
+
+                    if (!openList.Contains(neighbour)) openList.Add(neighbour); // add neighbour to the openList
                 }
 			}
 
-            openListVisualise = openList;
-            closedListVisualise = closedList;
-
-            yield return new WaitForSeconds(.001f);
 		}
     }
 }

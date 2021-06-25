@@ -12,6 +12,7 @@ public class ButtonEventHandler : MonoBehaviour
 
 	public TileWorldBuilder tileWorldBuilderInstance = null;
 	public GridMap gridMapInstance = null;
+	public PathFinder pathFinderInstance = null;
 
 	public void BuildWorldButtonClick()
 	{

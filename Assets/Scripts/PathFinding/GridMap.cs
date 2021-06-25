@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class GridMap : MonoBehaviour
 {
-	/* public class Node  // may seperate this to its own script later
-
-	{
-		public bool walkable;
-		public bool cover = false;
-		public Vector3 worldPosition;
-		public Node(bool isWalkable, Vector3 nodeWorldPosition)
-		{
-			walkable = isWalkable;
-			worldPosition = nodeWorldPosition;
-		}
-	} */
-
 	public Node[,] grid;
 
 	public List<Node> openList = new List<Node>();
@@ -24,8 +11,13 @@ public class GridMap : MonoBehaviour
 	public int gridRowX;
 	public int gridRowZ;
 
+	public GameObject player;
+
 	public float boxSize = .9f;
 	public LayerMask layerMask;
+
+	public List<Node> finalPath = new List<Node>();
+
 	// public GameObject startPoint;
 	// public GameObject endPoint; -- Move these to pathFinding script
 
@@ -40,6 +32,8 @@ public class GridMap : MonoBehaviour
 	public void BuildGrid(int rowsX, int rowsZ)
 	{
 		gridRowX = rowsX; gridRowZ = rowsZ; // set these variables to be accessed from pathfinder in the neighbourcheck;
+
+		if (grid != null) grid = null;
 
 		// build grid
 		grid = new Node[rowsX, rowsZ];
@@ -56,7 +50,15 @@ public class GridMap : MonoBehaviour
 			}
 		}
 
-		pathfinder.GetPath(); // put here to test shit works
+		while (true)
+		{
+			Node node = grid[Random.Range(0, rowsX), Random.Range(0, rowsZ)];
+			if(node.walkable == true)
+			{
+				player.transform.position = node.worldPosition;
+				break;
+			}
+		}
 	}
 
 	// convert worldPosition to node reference
@@ -82,6 +84,7 @@ public class GridMap : MonoBehaviour
 			foreach (Node node in grid)
 			{
 				Gizmos.color = (node.walkable) ? Color.green : Color.red;
+				if (finalPath != null && finalPath.Contains(node)) Gizmos.color = Color.magenta;
 				Gizmos.DrawWireCube(node.worldPosition, new Vector3(boxSize, boxSize, boxSize));
 			}
 		}

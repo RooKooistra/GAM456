@@ -6,6 +6,9 @@ using UnityEngine;
 public class TileWorldBuilder : MonoBehaviour
 {
 	[SerializeField]
+	GridMap gridMap;
+
+	[SerializeField]
 	private GameObject BuildingBlockPrefab = null;
 	[SerializeField]
 	private GameObject Floor = null;
@@ -38,8 +41,10 @@ public class TileWorldBuilder : MonoBehaviour
 				}
 
 			}
+			
 		}
 
+		gridMap.BuildGrid(rowsX, rowsZ);
 	}
 
 	public void DestroyWorld()
