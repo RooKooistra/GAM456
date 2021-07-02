@@ -219,7 +219,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10, y: 0.3, z: 14}
   m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
-  m_Children: []
+  m_Children:
+  - {fileID: 904048038}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -235,10 +236,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6afac26e29844d46950d7cb4d759b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRotationSpeed: 20
+  playerRotationSpeed: 10
+  avoidRotationSpeed: 2
   playerMaxForce: 3
   playerMaxSpeed: 2
   distanceToNodeTolerance: 1
+  baseFeelerDistance: 2
+  feelerMaxDistanceForward: 5
+  numberOfFeelersPerSide: 10
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
   debugData: {fileID: 531059028}
 --- !u!54 &29881709
 Rigidbody:
@@ -250,7 +258,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 2
-  m_AngularDrag: 0.05
+  m_AngularDrag: 4
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1851,6 +1859,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850903385}
   m_CullTransparentMesh: 1
+--- !u!1 &904048037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 904048038}
+  - component: {fileID: 904048039}
+  m_Layer: 0
+  m_Name: RayStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &904048038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904048037}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.138, z: 0.667}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_Children: []
+  m_Father: {fileID: 29881707}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &904048039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904048037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcd8db23f2334443963fc100e553035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GizmoRedValue: 0.348
+  GizmoGreenValue: 0.459
+  GizmoBlueValue: 1
+  GizmoSize: 0.2
+  changeGizmoToSphere: 1
 --- !u!1 &996700465
 GameObject:
   m_ObjectHideFlags: 0
