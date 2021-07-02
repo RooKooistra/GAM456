@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public Text debugData;
 
-	List<Node> pathToTravel = new List<Node>();
+	//List<Node> pathToTravel = new List<Node>();
 	Rigidbody rigidBody;
 
 	private void Start()
@@ -27,20 +27,21 @@ public class PlayerMovement : MonoBehaviour
 
 	IEnumerator TravelPathGo(List<Node> path)
 	{
-		pathToTravel = path;
+		//pathToTravel = path;
 		
 		int index = 0;
 		while (true)
 		{
-			if (Vector3.Distance(transform.position, pathToTravel[index].worldPosition) < distanceToNodeTolerance)
+			
+
+			if (Vector3.Distance(transform.position, path[index].worldPosition) < distanceToNodeTolerance)
 			{
 				index++;
+
 				if (index >= path.Count) yield break;
 			}
-			Vector3 targetDirection = (pathToTravel[index].worldPosition - transform.position).normalized;
-			float dotProduct = Vector3.Dot(targetDirection, transform.forward);
 
-			debugData.text = "Dot: " + dotProduct;
+			Vector3 targetDirection = (path[index].worldPosition - transform.position).normalized;
 
 			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, playerRotationSpeed * Time.deltaTime, 0.0f);
 
@@ -51,9 +52,30 @@ public class PlayerMovement : MonoBehaviour
 			rigidBody.AddForce(transform.forward * playerMaxForce);
 			rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, playerMaxSpeed);
 
+			debugData.text = path.Count.ToString();
+			index = CheckAhead(path, index); // run check head to see if any further nodes are visible
+
 			yield return null;
 		}
 
+	}
+
+	int CheckAhead(List<Node> path, int currentIndex)
+	{
+		int intToReturn = currentIndex;
+		for(int i = currentIndex; i <= path.Count; i++)
+		{
+			var direction = (path[i].worldPosition - transform.position).normalized;
+
+			RaycastHit hit;
+			if (Physics.Raycast(transform.position, direction, out hit, float.MaxValue))
+			{
+				if (hit.transform.position == path[i].worldPosition) intToReturn = i;
+			}
+		}
+
+		//debugData.text = ("Index to return " + intToReturn);
+		return intToReturn;
 	}
 
 
