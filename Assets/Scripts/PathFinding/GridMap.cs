@@ -18,8 +18,6 @@ public class GridMap : MonoBehaviour
 
 	public List<Node> finalPath = new List<Node>();
 
-	// public GameObject startPoint;
-	// public GameObject endPoint; -- Move these to pathFinding script
 
 	PathFinder pathfinder;
 
@@ -68,14 +66,7 @@ public class GridMap : MonoBehaviour
 		return grid[Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.z)];
 	}
 
-
-	// get list of neighbours
-
-
 	// use grid for path finding shenanningans - Do path finding in another script - think about multiple agents.
-
-	
-
 
 	private void OnDrawGizmos()
 	{

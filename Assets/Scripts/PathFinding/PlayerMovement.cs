@@ -11,9 +11,12 @@ public class PlayerMovement : MonoBehaviour
 	public float playerMaxSpeed = 2;
 	public float distanceToNodeTolerance = 1f;
 
-	public float baseFeelerDistance = 2f;
-	public float feelerMaxDistanceForward = 5;
-	public float numberOfFeelersPerSide = 10;
+	[SerializeField]
+	[Range(1,10)] int baseFeelerDistance = 2;
+	[SerializeField]
+	[Range(1, 10)] int feelerMaxDistanceForward = 5;
+	[SerializeField]
+	[Range(2, 10)] int numberOfFeelersPerSide = 10;
 
 	public LayerMask layerMask;
 
@@ -60,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 	void LookAtTarget(Vector3 lookAtVector)
 	{
 		Vector3 transDirection = transform.InverseTransformPoint(lookAtVector).normalized;
-		float torqueAmount = (transDirection.z >= 0) ? transDirection.x : (transDirection.x > 0) ? 1 : -1;
+		float torqueAmount = (transDirection.z >= 0) ? transDirection.x : (transDirection.x > 0) ? 1 : -1; // if target is behind, max out torque value
 		rigidBody.AddTorque(new Vector3(0, torqueAmount * playerRotationSpeed), ForceMode.Force);
 	}
 
@@ -69,17 +72,16 @@ public class PlayerMovement : MonoBehaviour
 	{
 		for(int x = -1; x <= 1; x++)
 		{
-			for (float z = 0; z <= feelerMaxDistanceForward; z = z + feelerMaxDistanceForward / numberOfFeelersPerSide)
+			for (float z = 0; z <= (float)feelerMaxDistanceForward; z = z + (float)feelerMaxDistanceForward / (float)numberOfFeelersPerSide)
 			{
 				if (x == 0) continue; // eliminate raycast straight forward
-				var rayDirection = transform.TransformDirection(new Vector3(x, 0, z)).normalized;
-				Debug.DrawRay(transform.position, rayDirection * (z + baseFeelerDistance), Color.magenta);
+				var rayDirection = transform.TransformDirection(new Vector3((float)x, 0, (float)z)).normalized;
+				Debug.DrawRay(transform.position, rayDirection * (z + (float)baseFeelerDistance), Color.magenta);
 				RaycastHit hit;
-				if (Physics.Raycast(transform.position, rayDirection, out hit, z + baseFeelerDistance, layerMask))
+				if (Physics.Raycast(transform.position, rayDirection, out hit, z + (float)baseFeelerDistance, layerMask))
 				{
 					// rotational force divided by hit length (more force when closer) ... Longer feelers have weaker strength
 					rigidBody.AddTorque(new Vector3(0, -x / hit.distance * avoidRotationSpeed / (z+1f)), ForceMode.Force); 
-					Debug.Log("Hit");
 				}
 			}
 		}

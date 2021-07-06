@@ -26,11 +26,12 @@ public class PathFinder : MonoBehaviour
             {
                 if (x == 0 && z == 0) continue;
 
-                // check to see if node is inside the grid
+                // get node references
                 int thisRowX = Mathf.RoundToInt(node.worldPosition.x + x);
                 int thisRowZ = Mathf.RoundToInt(node.worldPosition.z + z);
 
-				if (thisRowX >= 0 && thisRowX < gridMap.gridRowX && thisRowZ >= 0 && thisRowZ < gridMap.gridRowZ)
+                // check to see if node is inside the grid
+                if (thisRowX >= 0 && thisRowX < gridMap.gridRowX && thisRowZ >= 0 && thisRowZ < gridMap.gridRowZ)
 				{
                     neighbours.Add(gridMap.grid[thisRowX, thisRowZ]);
 				}
@@ -43,7 +44,6 @@ public class PathFinder : MonoBehaviour
     float GetDistanceBetweenNodes(Node fromNode,Node toNode)
 	{
         float distance = Vector3.Distance(fromNode.worldPosition, toNode.worldPosition);
-        //return Mathf.RoundToInt(distance);
         return distance;
 	}
 

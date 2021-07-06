@@ -21,7 +21,7 @@ public class ClickHandler : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            target.transform.position = hit.transform.position;
+            if (target != null) target.transform.position = hit.transform.position;
             pathFinder.GetPath(transform.position, hit.transform.position);
         }
     }

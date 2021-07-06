@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ButtonEventHandler : MonoBehaviour
 {
+	// This script is to handle button presses in the world and grid building panel
+
 	public Slider SliderRowZ;
 	public Slider SliderRowX;
 	public Slider densitySlider;
