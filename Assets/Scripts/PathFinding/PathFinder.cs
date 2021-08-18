@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class PathFinder : MonoBehaviour
@@ -68,8 +69,9 @@ public class PathFinder : MonoBehaviour
 
 
     public void GetPath(Vector3 from, Vector3 to)
-    { 
-
+    {
+        Stopwatch stopWatch = new Stopwatch();
+        stopWatch.Start();
         /* Notes from Reference
          * 
          * OPEN // the set of nods to be evaluated          -- DONE
@@ -123,6 +125,9 @@ public class PathFinder : MonoBehaviour
             if (activeNode == endNode) // path has been found... 
             {
                 GetFinalPath(startNode, endNode);
+                
+                stopWatch.Stop();
+                print(stopWatch.Elapsed.TotalMilliseconds);
                 return; 
             }
 
@@ -141,5 +146,6 @@ public class PathFinder : MonoBehaviour
 			}
 
 		}
+        
     }
 }

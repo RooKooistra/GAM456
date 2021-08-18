@@ -67,7 +67,7 @@ public class GridMap : MonoBehaviour
 	}
 
 	// use grid for path finding shenanningans - Do path finding in another script - think about multiple agents.
-
+	
 	private void OnDrawGizmos()
 	{
 		if (grid != null)
@@ -80,5 +80,5 @@ public class GridMap : MonoBehaviour
 			}
 		}
 	}
-
+	
 }
